@@ -1,0 +1,9 @@
+[report]=
+show_missing=True
+omit=
+   ./venv/*
+   ./UI/*
+   ./API/tests/*
+   */API/models/*
+   ./API*\__init__.py
+   

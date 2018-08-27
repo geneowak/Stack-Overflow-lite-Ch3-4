@@ -1,0 +1,10 @@
+autopep8
+coverage
+coveralls
+Flask
+Flask-RESTful
+pylint
+pytest
+pytest-cov
+pytest-xdist
+uwsgi

@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.5"
+
+cache: pip3
+
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+  
+script:
+    - py.test --cov=API
+    - coverage report
+    
+after_success:
+    - coveralls

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Affordable and professional web design">
+    <meta name="keywords" content="web design, stack overflow, question and answer">
+    <meta name="author" content="Eugene Owak">
+    <title>Stack Overflow-lite | Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
+    <script src="./js/main.js"></script>
+    <script>
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1 class="margin0;">Stack Overflow-lite</h1>
+                <h4 class="margin0">Where all your questions get answered</h4>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="profile.html">Profile</a>
+                    </li>
+                    <li>
+                        <a href="login.html">Login</a>
+                    </li>
+                    <li>
+                        <a href="signup.html">signup</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="main">
+        <div class="container">
+            <div class="container">
+                <div class="">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="./img/img_avatar2.png" alt="Avatar" class="avatar">
+                                </td>
+                                <td>
+                                    <div class="pull-left">
+                                        <h1>username: <input type="text" name="" id=""disabled placeholder="geneowak"></h1>
+                                        <h4 class="margin0;"> Description</h4>
+                                        <textarea name="" id="" disabled="disabled" rows="10" cols="50">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut consectetur felis, eu feugiat eros. Cras scelerisque finibus interdum. Aliquam accumsan lectus sed neque tempor blandit. Praesent et sapien ante. Vestibulum condimentum congue nisl et varius. Morbi scelerisque eros sed lorem rhoncus ultrices in quis metus. Duis vel justo elit. Nulla facilisi. Vestibulum acilisis lectus non volutpat hendrerit. Curabitur non viverra neque.
+                                        </textarea>
+                                        <button type="submit">Edit Description</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="tab">
+                    <button id="defaultOpen" class="tablinks" onclick="openTab(event, 'questions')">questions</button>
+                    <button class="tablinks" onclick="openTab(event, 'answers')">answers</button>
+                </div>
+                
+                <div id="questions" class="tabcontent">
+                    <div>
+                        sortby: <select name="sort" id="">
+                            <option value="" selected>Most Recent</option>
+                            <option value="">Most Answers</option>
+                        </select>
+                    </div>
+                    <h2>0 Questions.</h2>
+                </div>
+                
+                <div id="answers" class="tabcontent">
+                    <h2>0 Answers.</h2>
+                </div>
+            </div>            
+        </div>
+    </section>
+
+    <footer>
+        <p>Stack Overflow-lite, Copyright &copy; 2018</p>
+    </footer>
+</body>
+
+</html>
