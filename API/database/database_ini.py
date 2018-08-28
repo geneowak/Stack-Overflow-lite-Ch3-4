@@ -20,7 +20,7 @@ def db_tables():
         username VARCHAR (50) UNIQUE NOT NULL,
         password VARCHAR (100) NOT NULL,
         create_date TIMESTAMP NOT NULL,
-        last_login TIMESTAMP
+        last_login TIMESTAMP DEFAULT NULL
         )""".format(tb_names["users"])
     create_questions_tb = """CREATE TABLE IF NOT EXISTS {} (
         qn_id serial PRIMARY KEY,

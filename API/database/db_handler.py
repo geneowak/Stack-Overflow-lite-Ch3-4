@@ -1,12 +1,14 @@
 import psycopg2
 from pprint import pprint
+# from API.app import app
+import API.app
 from database_ini import development_db_config, test_db_config, db_tables, table_names
 
 
 class DbHandler:
-    def __init__(self, mode=None):
+    def __init__(self):
         try:
-            if mode != None and mode.lower() == 'testing':
+            if app.config['TESTING']:
                 self.conn = psycopg2.connect(**test_db_config)
             else:
                 self.conn = psycopg2.connect(**development_db_config)
@@ -21,6 +23,7 @@ class DbHandler:
             pprint(error)
 
     def close_conn(self):
+        self.cursor.close()
         self.conn.close()
 
     def drop_all_tables(self):

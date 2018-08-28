@@ -1,11 +1,9 @@
 import datetime
-import psycopg2
 from API.database.question_db_handler import QuestionHandler
-from API.database.database_ini import default_db_config
 
 class Question:
     ''' cols in tb: qn_id, title, body, user_id, create_date '''
-
+    questions = []
     def __init__(self, title, body, user_id):
         self.user_id = user_id
         self.title = title
@@ -15,17 +13,16 @@ class Question:
 
     def json(self):
         return {
-            "id": self.id,
+            "user_id": self.user_id,
             "title": self.title,
             "body": self.body,
             "answers": self.answers,
             "comments": self.comments
         }
 
-    @classmethod
-    def add_question(cls, data):
+    def add_question(self, data):
         result = QuestionHandler()
-        return result.insert_question(self.title, self.body, self.user_id)
+        return result.insert_question(self.user_id, self.title, self.body)
 
     @classmethod
     def get_question_by_id(cls, questionId):
@@ -41,7 +38,6 @@ class Question:
 
     @classmethod
     def get_questions(cls):
-        query = 
         from .answer import Answer
 
         for qn in cls.questions:
