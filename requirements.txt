@@ -7,4 +7,5 @@ pylint
 pytest
 pytest-cov
 pytest-xdist
+psycopg2
 uwsgi

@@ -1,10 +1,13 @@
+import datetime
+import psycopg2
+from API.database.question_db_handler import QuestionHandler
+from API.database.database_ini import default_db_config
 
 class Question:
+    ''' cols in tb: qn_id, title, body, user_id, create_date '''
 
-    questions = []
-
-    def __init__(self, _id, title, body):
-        self.id = _id
+    def __init__(self, title, body, user_id):
+        self.user_id = user_id
         self.title = title
         self.body = body
         self.answers = []
@@ -21,35 +24,8 @@ class Question:
 
     @classmethod
     def add_question(cls, data):
-        question = {
-            'id': data.id,  # using timestamps as ids
-            "title": data.title,
-            "body": data.body,
-            "answers": [],
-            "comments": []
-        }
-        print(question)
-        cls.questions.append(question)
-        return None
-
-    ''' return True if answer is added, False otherwise '''
-    @classmethod
-    def add_answer (cls, questionId, answer):
-        question = cls.get_question_by_id(questionId)
-
-        if question:
-            question['answers'].append(answer)
-            return True
-        return False
-
-    @classmethod
-    def add_comment (cls, questionId, comment):
-        question = cls.get_question_by_id(questionId)
-
-        if question:
-            question['comments'].append(comment)
-            return True
-        return False
+        result = QuestionHandler()
+        return result.insert_question(self.title, self.body, self.user_id)
 
     @classmethod
     def get_question_by_id(cls, questionId):
@@ -63,15 +39,13 @@ class Question:
                 return qn
         return None
 
-    # get all the questions with their answers on loading the application
-    @classmethod
-    def load_all_qns(cls):
-        from .answer import Answer
-        for qn in cls.questions:
-            qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
-
     @classmethod
     def get_questions(cls):
+        query = 
+        from .answer import Answer
+
+        for qn in cls.questions:
+            qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
         return cls.questions
 
     @classmethod
