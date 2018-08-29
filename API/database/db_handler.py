@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 from pprint import pprint
 from .database_ini import development_db_config, test_db_config, db_tables, table_names
 
@@ -14,7 +15,7 @@ class DbHandler:
                 self.conn = psycopg2.connect(**development_db_config)
                 pprint("Using development db....")
             self.conn.autocommit = True
-            self.cursor = self.conn.cursor()
+            self.cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         except (Exception, psycopg2.DatabaseError) as error:
             pprint(error)
@@ -34,7 +35,7 @@ class DbHandler:
     def drop_all_tables(self):
         tb_names = table_names()
         for key in tb_names:
-            self.cursor.execute("DROP TABLE {} CASCADE".format(tb_names[key]))
+            self.cursor.execute("DROP TABLE IF EXISTS {} CASCADE".format(tb_names[key]))
     
 
 # if __name__ == '__main__':

@@ -4,6 +4,7 @@ from API.config import app_config
 from API.resources.question import QuestionList
 from API.models.question import Question
 from API.models.answer import Answer
+from API.database.db_handler import DbHandler
 import json
 
 
@@ -13,6 +14,11 @@ class BaseCase(unittest.TestCase):
         ''' this method sets up the client and the test data we'll be using in the tests '''
         app.config.from_object(app_config['testing'])
         self.client = app.test_client()
+        with self.client as client:
+            ''' create all tables before first request '''
+            dbHandle = DbHandler()
+            dbHandle.create_tables()
+            dbHandle.close_conn()
         self.add_question_url = '/api/v1/questions'
         self.get_questions_url = '/api/v1/questions'
         self.get_question_url = '/api/v1/questions/1'
@@ -100,5 +106,12 @@ class BaseCase(unittest.TestCase):
 
     def tearDown(self):
         ''' this method clears all the data that was used for the test '''
-        Question.questions.clear()
-        Answer.answers.clear()
+        with self.client as client:
+            ''' create all tables before first request '''
+            # dbHandle = DbHandler()
+            # dbHandle.drop_all_tables()
+            # dbHandle.close_conn()
+
+
+if __name__ == '__main__':
+    unittest.main()

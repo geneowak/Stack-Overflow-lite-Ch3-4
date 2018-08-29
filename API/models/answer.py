@@ -17,7 +17,7 @@ class Answer:
             "ans_id": self.ans_id,
             "qn_id": self.qn_id,
             "user_id": self.user_id,
-            "body": self.body,
+            "answer": self.body,
             "comments": self.comments
         }
 
@@ -71,13 +71,28 @@ class Answer:
 
     @classmethod
     def get_answer_by_id(cls, answerId):
-        try:
-            # check if answer id is in required format
-            answerId = float(answerId)
-        except:
-            return None
         handle = AnswerHandler()
         answer = handle.get_answers_by_ans_id(answerId)
+        print(answer)
         if answer:
             return Answer(answer[0], answer[1], answer[2], answer[3])
         return None
+
+    @classmethod
+    def update_answer(cls, ans_id, body):
+        print("ans_id:", ans_id, " body:", body)
+        handle = AnswerHandler()
+        question = handle.update_answer(ans_id, body)
+        print(question)
+        if question:
+            return True
+        return False
+
+    @classmethod
+    def accept_answer(cls, ans_id, qn_id):
+        print("ans_id:", ans_id, " qn_id:", qn_id)
+        handle = AnswerHandler()
+        question = handle.accept_answer(ans_id, qn_id)
+        if question:
+            return True
+        return False

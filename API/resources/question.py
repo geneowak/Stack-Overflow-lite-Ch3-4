@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from API.models.question import Question
-from .utilities import clean_input, check_body_length, check_title_length
+from .utilities import clean_input, check_description_length, check_title_length
 
 class Questions(Resource):
     
@@ -42,35 +42,34 @@ class Questions(Resource):
             help="The body field can't be empty"
         )
         data = parser.parse_args()
-
-        ''' validate data sent '''
-
-        if not clean_input(data['body']):
-            return {'message': 'The body should be a string'}, 400
-
-        if not check_body_length(data['body']):
-            return {'message': 'The body should be atleast 15 characters'}, 400
-
-        ''' validate that the question hasn't been asked before '''
-
-        if Question.check_qn_body(data['body']):
-            return {'message': 'Sorry, that question with already exits'}, 400
-
+        
         user_id = get_jwt_identity()
 
         db_question = Question.get_question_by_id(questionId)
         if db_question:
             if db_question.user_id == user_id:
+                ''' validate data sent '''
+                if not clean_input(data['body']):
+                    return {'message': 'The body should be a string'}, 400
+
+                if not check_description_length(data['body']):
+                    return {'message': 'The question description is too short'}, 400
+
+                ''' validate that the question hasn't been asked before '''
+
+                if Question.check_qn_body(data['body']):
+                    return {'message': 'Sorry, that question with already exits'}, 400
+
                 try:
                     if Question.update_question(db_question.qn_id, data['body']):
-                        return {"message":"Question was successfully deleted"}, 200
+                        return {"message": "Question was successfully updated"}, 200
+                        
                     return {"message": "Question was not updated, Please try again later..."}, 500
                 except:
                     return {'message': 'There was a problem adding the question'}, 500
             return {'message': "Sorry you don't have permission to update this question"}, 401
 
         return {'message': 'Question not found'}, 404
-
 
 
 class QuestionList(Resource):
@@ -106,8 +105,8 @@ class QuestionList(Resource):
         if not clean_input(data['body']):
             return {'message': 'The body should be a string'}, 400
             
-        if not check_body_length(data['body']):
-            return {'message': 'The body should be atleast 15 characters'}, 400
+        if not check_description_length(data['body']):
+            return {'message': 'The question description is too short.'}, 400
             
         ''' validate that the question hasn't been asked before '''
         if Question.check_qn_title(data['title']):

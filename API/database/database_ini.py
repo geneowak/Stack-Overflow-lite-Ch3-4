@@ -10,8 +10,8 @@ test_db_config = {
     "host":"localhost", 
     "database": "test_db",
     "port": 5432,
-    "user": "stackOverflow",
-    "password": "hello$$123"
+    "user": "postgres",
+    "password": ""
 }
 
 

@@ -25,8 +25,31 @@ class AnswerHandler(DbHandler):
 
     def update_answer(self, ans_id, body):
         try:
+            print("ans_id:", ans_id, " body:", body)
             query = "UPDATE answers SET body=%s WHERE ans_id=%s"
             self.cursor.execute(query, (body, ans_id))
+            super().close_conn()
+            print('answer updated....',ans_id)
+            return True
+        except (Exception) as error:
+            pprint(error)
+            self.conn.rollback()
+            super().close_conn()
+            return False
+
+    def accept_answer(self, ans_id, qn_id):
+        try:
+            print("ans_id:",ans_id," qn_id:",qn_id)
+            # first unselect what was accepted before
+            query = "SELECT ans_id FROM answers WHERE qn_id=%s AND preferred=%s"
+            self.cursor.execute(query, (qn_id,'true'))
+            row = self.cursor.fetchone()
+            if row:
+                query = "UPDATE answers SET preferred=%s WHERE ans_id=%s"
+                self.cursor.execute(query, ('false', row[0]))
+
+            query = "UPDATE answers SET preferred=%s WHERE ans_id=%s"
+            self.cursor.execute(query, ('true', ans_id))
             super().close_conn()
             return True
         except (Exception) as error:
@@ -51,9 +74,9 @@ class AnswerHandler(DbHandler):
         try:
             query = "SELECT body, qn_id, user_id, ans_id FROM answers WHERE ans_id=%s"
             self.cursor.execute(query, (ans_id,))
-            rows = self.cursor.fetchone()
+            row = self.cursor.fetchone()
             super().close_conn()
-            return rows
+            return row
         except (Exception) as error:
             pprint(error)
             super().close_conn()

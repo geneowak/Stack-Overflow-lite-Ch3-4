@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 from API.models.answer import Answer
 from API.models.question import Question
 from API.models.comment import Comment
-from .utilities import clean_input
+from .utilities import clean_input, check_comment_length
 
 ''' 
 End point to develop

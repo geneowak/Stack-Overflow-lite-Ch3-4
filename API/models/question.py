@@ -16,8 +16,8 @@ class Question:
         return {
             "qn_id": self.qn_id,
             "user_id": self.user_id,
-            "title": self.title,
-            "body": self.body,
+            "question": self.title,
+            "description": self.body,
             "answers": self.answers,
             "comments": self.comments
         }
@@ -49,7 +49,7 @@ class Question:
         questionsList = []
         if questions:
             for question in questions:
-                qn = Question(question[0], question[1],question[2],question[3])
+                qn = Question(question['title'], question['body'],question['user_id'],question['qn_id'])
                 questionsList.append(qn)
 
             return [ x.json() for x in questionsList] 

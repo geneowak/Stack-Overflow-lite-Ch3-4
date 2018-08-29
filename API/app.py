@@ -3,7 +3,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
 from API.resources.question import Questions, QuestionList
-from API.resources.answer import Answers, AnswerList
+from API.resources.answer import Answers, AnswerList, UpdateAnswer
 from API.resources.comment import CommentList, QuestionComments, AnswerComments
 from API.resources.user import RegisterUser, Login
 
@@ -59,6 +59,7 @@ api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
 
 api.add_resource(RegisterUser, '/api/v1/auth/signup')
 api.add_resource(Login, '/api/v1/auth/login')
+api.add_resource(UpdateAnswer, '/api/v1/questions/<string:questionId>/answers/<string:answerId>')
 
 # if __name__ == "__main__":
 #     app.config.from_object(app_config['development'])
