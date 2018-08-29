@@ -1,23 +1,20 @@
 import psycopg2
 from pprint import pprint
-# from API.app import app
-import API.app
-from database_ini import development_db_config, test_db_config, db_tables, table_names
+from .database_ini import development_db_config, test_db_config, db_tables, table_names
 
 
 class DbHandler:
     def __init__(self):
         try:
+            from API.app import app
             if app.config['TESTING']:
                 self.conn = psycopg2.connect(**test_db_config)
+                pprint("Using test db....")
             else:
                 self.conn = psycopg2.connect(**development_db_config)
+                pprint("Using development db....")
             self.conn.autocommit = True
             self.cursor = self.conn.cursor()
-
-            # create the db tables if they don't exit
-            for table in db_tables():
-                self.cursor.execute(table)
 
         except (Exception, psycopg2.DatabaseError) as error:
             pprint(error)
@@ -26,6 +23,14 @@ class DbHandler:
         self.cursor.close()
         self.conn.close()
 
+    def create_tables(self):
+        # create the db tables if they don't exit
+        # pprint("Creating tables....")
+        for table in db_tables():
+            # pprint(table)
+            self.cursor.execute(table)
+        # pprint("Created tables....")
+
     def drop_all_tables(self):
         tb_names = table_names()
         for key in tb_names:
@@ -33,5 +38,7 @@ class DbHandler:
     
 
 # if __name__ == '__main__':
-#     db = DbHandler()
-#     db.drop_all_tables()
+#     dbHandle = DbHandler()
+#     dbHandle.create_tables()
+#     dbHandle.close_conn()
+    

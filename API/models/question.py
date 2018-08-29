@@ -4,15 +4,17 @@ from API.database.question_db_handler import QuestionHandler
 class Question:
     ''' cols in tb: qn_id, title, body, user_id, create_date '''
     questions = []
-    def __init__(self, title, body, user_id):
+    def __init__(self, title, body, user_id, qn_id = None):
         self.user_id = user_id
         self.title = title
         self.body = body
+        self.qn_id = qn_id
         self.answers = []
         self.comments = []
 
     def json(self):
         return {
+            "qn_id": self.qn_id,
             "user_id": self.user_id,
             "title": self.title,
             "body": self.body,
@@ -31,36 +33,66 @@ class Question:
             questionId = float(questionId)
         except:
             return None
-        for qn in cls.questions:
-            if float(qn['id']) == float(questionId):
-                return qn
+        handle = QuestionHandler()
+        question = handle.get_question_by_id(questionId)
+        if question:
+            qn = Question(question[0], question[1], question[2], question[3])
+            from .answer import Answer
+            qn.answers.extend(Answer.get_answers_by_qn_id(qn.qn_id))
+            return qn
         return None
 
     @classmethod
     def get_questions(cls):
-        from .answer import Answer
+        handle = QuestionHandler()
+        questions = handle.get_questions()
+        questionsList = []
+        if questions:
+            for question in questions:
+                qn = Question(question[0], question[1],question[2],question[3])
+                questionsList.append(qn)
 
-        for qn in cls.questions:
-            qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
-        return cls.questions
-
-    @classmethod
-    def get_no_of_qns(cls):
-        return len(cls.questions)
+            return [ x.json() for x in questionsList] 
+        # from .answer import Answer
+        # for qn in cls.questions:
+        #     qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
+        return questionsList
 
     @classmethod
     def check_qn_title(cls, title):
         ''' check if a question has been asked before '''
-        for qn in cls.questions:
-            if (qn['title']).lower() == title.lower():
-                return True
-        return False
+        handle = QuestionHandler()
+        return handle.check_title(title)
 
     @classmethod
     def check_qn_body(cls, body):
         ''' check if a question has been asked before '''
-        for qn in cls.questions:
-            if (qn['body']).lower() == body.lower():
-                return True
-        return False
+        handle = QuestionHandler()
+        return handle.check_body(body)
         
+    @classmethod
+    def delete_question(cls, qn_id):
+        try:
+            # check if question id is in required format
+            questionId = float(qn_id)
+        except:
+            return None
+        handle = QuestionHandler()
+        question = handle.delete_question(questionId)
+        if question:
+            return True 
+        return False
+
+    @classmethod
+    def update_question(cls, qn_id, body):
+        try:
+            # check if question id is in required format
+            qn_id = float(qn_id)
+        except:
+            return None
+        handle = QuestionHandler()
+        question = handle.update_question(qn_id, body)
+        if question:
+            return True 
+        return False
+

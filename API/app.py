@@ -1,12 +1,20 @@
 from flask import Flask, request, render_template
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
 
 from API.resources.question import Questions, QuestionList
 from API.resources.answer import Answers, AnswerList
 from API.resources.comment import CommentList, QuestionComments, AnswerComments
-from API.resources.user import RegisterUser
+from API.resources.user import RegisterUser, Login
+
+from API.database.db_handler import DbHandler
+
+from API.config import app_config
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = "JDJDISGHKJDGHPOGHIHGKDFNHIHWT723BQE8T7YFIOQER0Q3TYIOVN"
+jwt = JWTManager(app)
 
 api = Api(app)
 
@@ -29,6 +37,13 @@ PUT /questions/<questionId>/answers/<answerId> | Mark an answer as accepted | av
 PUT /questions/<questionId>/answers/<answerId> | update an answer. | available to only the answer author.
 
  '''
+
+@app.before_first_request
+def create_tables():
+    ''' create all tables before first request '''
+    dbHandle = DbHandler()
+    dbHandle.create_tables()
+    dbHandle.close_conn()
  
 @app.route('/')
 def get_def_page():
@@ -43,4 +58,8 @@ api.add_resource(QuestionComments, '/api/v1/questions/<string:questionId>/commen
 api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
 
 api.add_resource(RegisterUser, '/api/v1/auth/signup')
+api.add_resource(Login, '/api/v1/auth/login')
 
+# if __name__ == "__main__":
+#     app.config.from_object(app_config['development'])
+#     app.run()

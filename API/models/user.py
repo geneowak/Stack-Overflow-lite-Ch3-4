@@ -19,7 +19,7 @@ class UserModel:
         handle = UserHandler()
         row = handle.get_user_by_username(username)
         if row:
-            return UserModel(row[1], row[2], row[0]) 
+            return UserModel(row[0], row[1], row[2])
         return None
     
     @staticmethod
@@ -27,6 +27,6 @@ class UserModel:
         handle = UserHandler()
         row = handle.get_user_by_id(user_id)
         if row:
-            return UserModel(row[1], row[2], row[0])
+            return UserModel(row[0], row[1], row[2])
         return None
 

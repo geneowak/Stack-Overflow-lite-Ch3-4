@@ -1,15 +1,16 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 from API.models.answer import Answer
 from API.models.question import Question
 from .utilities import clean_input
 
-# load the answers from Model....
-answers = Answer.get_answers()
-
 
 class Answers(Resource):
 
+
+    @jwt_required
     def post(self, questionId):
         ''' method to add an answer '''
         try:
@@ -38,10 +39,9 @@ class Answers(Resource):
         ''' validate that the question hasn't been asked before '''
         if Answer.check_ans_body(data['body'], questionId):
             return {'message': 'Sorry, that answer has already been given'}, 400
-        # setting ids
-        ans_id = Answer.get_no_of_ans() + 1
 
-        answer = Answer(ans_id,  data['body'], questionId)
+        user_id = get_jwt_identity()
+        answer = Answer(data['body'], questionId, user_id)
         try:
             if Answer.add_answer(answer) == True:
                 return {'message': 'Your answer was successfully added'}, 201

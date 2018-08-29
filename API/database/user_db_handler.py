@@ -11,10 +11,9 @@ class UserHandler(DbHandler):
         
     def insert_user(self, username, password):
         try:
-            query = "INSERT INTO users VALUES ({},{},{},{},{})"
-            self.cursor.execute(query.format('NULL', username, password, datetime.datetime.now(), 'NULL'))
-            self.cursor.close()
-            self.conn.close()
+            query = "INSERT INTO users(username, password, create_date) VALUES (%s,%s,%s)"
+            self.cursor.execute(query,(username, password, datetime.datetime.now()))
+            super().close_conn()
             return True
         except (Exception) as error:
             pprint(error)
@@ -23,8 +22,8 @@ class UserHandler(DbHandler):
 
     def update_username(self, user_id, username):
         try:
-            query = "UPDATE users SET username={} WHERE user_id={}"
-            self.cursor.execute(query.format(username,user_id))
+            query = "UPDATE users SET username=%s WHERE user_id=%s"
+            self.cursor.execute(query, (username,user_id))
             super().close_conn()
             return True
         except (Exception) as error:
@@ -34,33 +33,36 @@ class UserHandler(DbHandler):
 
     def get_user_by_id(self, user_id):
         try:
-            query = "SELECT user_id, username, password FROM users WHERE user_id={}"
+            query = "SELECT username, password, user_id FROM users WHERE user_id={}"
             self.cursor.execute(query.format(user_id))
             row = self.cursor.fetchone()
             super().close_conn()
             return row
         except (Exception) as error:
             pprint(error)
-            super().close_conn()
+            # super().close_conn()
             return False
 
     def get_user_by_username(self, username):
         try:
-            query = "SELECT user_id, username, password FROM users WHERE username={}"
-            self.cursor.execute(query.format(username))
+            query = "SELECT username, password, user_id FROM users WHERE username=%s"
+            self.cursor.execute(query, (username,))
             row = self.cursor.fetchone()
+            pprint(row)
+            print(username)
             super().close_conn()
             return row
         except (Exception) as error:
             pprint(error)
+            print("there was an exception...")
             super().close_conn()
             return False
 
     def delete_user(self, username):
         try:
-            query = "DELETE FROM users WHERE username={}"
-            self.cursor.execute(query.format(username))
-            row = self.cursor.fetchone()
+            query = "DELETE FROM users WHERE username=%s CASCADE"
+            self.cursor.execute(query, (username))
+            # row = self.cursor.fetchone()
             super().close_conn()
             return True
         except (Exception) as error:

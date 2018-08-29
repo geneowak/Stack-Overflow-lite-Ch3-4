@@ -4,67 +4,90 @@ import datetime
 
 
 class QuestionHandler(DbHandler):
+    ''' qn_id, title, body, user_id, create_date '''
     def __init__(self):
         super().__init__()
     
     def insert_question(self, user_id, title, body):
         try:
-            query="INSERT INTO questions VALUES({},{},{},{},{})".format(
-                'NULL', title, body, user_id, datetime.datetime.now())
-            self.cursor.execute(query)
+            query="INSERT INTO questions (title, body, user_id, create_date) VALUES(%s,%s,%s,%s)"
+            self.cursor.execute(query, (title, body, user_id, datetime.datetime.now()))
             # close connection
-            self.conn.close()
+            super().close_conn()
             return True
         except (Exception) as error:
             pprint(error)
-            self.conn.close()
+            self.conn.rollback()
+            super().close_conn()
             return False
 
     def get_question_by_id(self, qn_id):
         try:
-            query = "SELECT FROM questions WHERE qn_id={}"
-            self.cursor.execute(query.format(qn_id))
+            query = "SELECT title, body, user_id, qn_id FROM questions WHERE qn_id=%s"
+            self.cursor.execute(query, (qn_id,))
             row = self.cursor.fetchone()
-            self.conn.close()
+            super().close_conn()
             return row
         except (Exception) as error:
             pprint(error)
-            self.conn.close()
+            super().close_conn()
+            return False
+
+    def delete_question(self, qn_id):
+        try:
+            query = "DELETE FROM questions WHERE qn_id=%s"
+            self.cursor.execute(query, (qn_id,))
+            super().close_conn()
+            return True
+        except (Exception) as error:
+            pprint(error)
+            super().close_conn()
             return False
         
     def get_questions(self):
         try:
-            query = "SELECT * FROM questions"
+            query = "SELECT title, body, user_id, qn_id FROM questions"
             self.cursor.execute(query)
             rows = self.cursor.fetchall()
-            self.conn.close()
+            super().close_conn()
             return rows
         except (Exception) as error:
             pprint(error)
-            self.conn.rollback()
-            self.conn.close()
+            super().close_conn()
             return None
 
-    def update_question(self, qn_id):
+    def update_question(self, qn_id, body):
         try:
-            pass
+            query = "UPDATE questions SET body=%s WHERE qn_id=%s"
+            self.cursor.execute(query, (body,qn_id))
+            super().close_conn()
+            return True
         except (Exception) as error:
             pprint(error)
-            self.conn.close()
+            self.conn.rollback()
+            super().close_conn()
             return False
 
-    def check_title(self, qn_id):
+    def check_title(self, title):
         try:
-            pass
+            query = "SELECT title, body, user_id, qn_id FROM questions WHERE title=%s"
+            self.cursor.execute(query, (title,))
+            row = self.cursor.fetchone()
+            super().close_conn()
+            return row
         except (Exception) as error:
             pprint(error)
-            self.conn.close()
+            super().close_conn()
             return False
 
-    def check_body(self, qn_id):
+    def check_body(self, body):
         try:
-            pass
+            query = "SELECT title, body, user_id, qn_id FROM questions WHERE body=%s"
+            self.cursor.execute(query, (body,))
+            row = self.cursor.fetchone()
+            super().close_conn()
+            return row
         except (Exception) as error:
             pprint(error)
-            self.conn.close()
+            super().close_conn()
             return False

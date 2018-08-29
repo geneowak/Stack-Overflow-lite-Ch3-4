@@ -1,13 +1,15 @@
 development_db_config = {
     "host": "localhost",
-    "database":"stack_over_flow_app",
+    "database": "stack_over_flow_app",
+    "port": 5432,
     "user": "stackOverflow",
     "password": "hello$$123"
 }
 
 test_db_config = {
     "host":"localhost", 
-    "database":"test_db",
+    "database": "test_db",
+    "port": 5432,
     "user": "stackOverflow",
     "password": "hello$$123"
 }
@@ -36,30 +38,42 @@ def db_tables():
         ans_id serial PRIMARY KEY,
         body VARCHAR (255) NOT NULL,
         qn_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         preferred VARCHAR (10) DEFAULT 'false',
         create_date TIMESTAMP,
         FOREIGN KEY(qn_id)
             REFERENCES questions(qn_id)
+            ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(user_id)
+            REFERENCES users(user_id)
             ON DELETE CASCADE ON UPDATE CASCADE
         )""".format(tb_names["answers"])
-    create_answer_comments_tb = """CREATE TABLE IF  NOT EXISTS {} (
-        id serial PRIMARY KEY,
-        body VARCHAR (255) NOT NULL,
-        qn_id INTEGER NOT NULL,
-        create_date TIMESTAMP,
-        FOREIGN KEY(qn_id)
-            REFERENCES questions(qn_id)
-            ON DELETE CASCADE ON UPDATE CASCADE
-        )""".format(tb_names["answer_comments"])
     create_question_comments_tb = """CREATE TABLE IF  NOT EXISTS {} (
         id serial PRIMARY KEY,
         body VARCHAR (255) NOT NULL,
+        qn_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        create_date TIMESTAMP,
+        FOREIGN KEY(qn_id)
+            REFERENCES questions(qn_id)
+            ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(user_id)
+            REFERENCES users(user_id)
+            ON DELETE CASCADE ON UPDATE CASCADE
+        )""".format(tb_names["question_comments"])
+    create_answer_comments_tb = """CREATE TABLE IF  NOT EXISTS {} (
+        id serial PRIMARY KEY,
+        body VARCHAR (255) NOT NULL,
         ans_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         create_date TIMESTAMP,
         FOREIGN KEY(ans_id)
             REFERENCES answers(ans_id)
+            ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(user_id)
+            REFERENCES users(user_id)
             ON DELETE CASCADE ON UPDATE CASCADE
-        )""".format(tb_names["question_comments"])
+        )""".format(tb_names["answer_comments"])
 
     return [
         create_user_tb,
