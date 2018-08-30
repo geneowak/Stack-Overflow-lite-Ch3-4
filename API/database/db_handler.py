@@ -12,7 +12,7 @@ class DbHandler:
             if os.getenv('FLASK_ENV') == 'HEROKU11':
                 self.conn = psycopg2.connect(os.getenv('DATABASE_URL'))
                 # pprint("Using HEROKU db....")
-            if app.config['TESTING']:
+            elif app.config['TESTING']:
                 self.conn = psycopg2.connect(**test_db_config)
                 # pprint("Using test db....")
             else:
