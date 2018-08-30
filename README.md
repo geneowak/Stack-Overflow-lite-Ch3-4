@@ -1,7 +1,7 @@
 # StackOverflow-lite
 
 [![Build Status](https://travis-ci.com/geneowak/-StackOverflow-lite.svg?branch=version_1)](https://travis-ci.com/geneowak/-StackOverflow-lite)
-[![Coverage Status](https://coveralls.io/repos/github/geneowak/-StackOverflow-lite/badge.svg?branch=version_1)](https://coveralls.io/github/geneowak/-StackOverflow-lite?branch=version_1)
+[![Coverage Status](https://coveralls.io/repos/github/geneowak/Stack-Overflow-lite-Ch3-4/badge.svg?branch=tests_for_api)](https://coveralls.io/github/geneowak/Stack-Overflow-lite-Ch3-4?branch=tests_for_api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/38f513cdfe1984e4be8a/maintainability)](https://codeclimate.com/github/geneowak/-StackOverflow-lite/maintainability)
 
 ## Description
