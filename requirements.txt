@@ -7,5 +7,6 @@ pylint
 pytest
 pytest-cov
 pytest-xdist
+flask-jwt-extended
 psycopg2
 uwsgi

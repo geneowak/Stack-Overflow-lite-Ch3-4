@@ -108,7 +108,7 @@ class UpdateAnswer(Resource):
                         return {'message': 'Sorry, that answer with already exits'}, 400
                     try:
                         if Answer.update_answer(answer.ans_id, body):
-                            return {"message": "Answer was successfully updated"}, 200
+                            return {"message": "Answer was successfully updated"}, 201
 
                         return {"message": "There was a problem updating the answer, Please try again later..."}, 500
                     except:
