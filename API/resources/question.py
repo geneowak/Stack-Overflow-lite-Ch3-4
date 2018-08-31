@@ -98,7 +98,7 @@ class QuestionList(Resource):
         data = parser.parse_args()
         ''' validate data sent '''
         body = data['body'].strip().lower()
-        title = body.strip().lower()
+        title = data['title'].strip().lower()
         if not clean_input(title):
             return {'message': 'The title should be a string'}, 400
         

@@ -20,6 +20,7 @@ class TestAnswerApi(unittest.TestCase):
         with self.client as client:
             ''' create all tables before first request '''
             dbHandle = DbHandler()
+            dbHandle.drop_all_tables()
             dbHandle.create_tables()
             dbHandle.close_conn()
             add_test_user(client)
@@ -36,8 +37,7 @@ class TestAnswerApi(unittest.TestCase):
             request = add_answer(client, self.token, test_answer)
             self.assertEqual(request.status_code, 201)
             response = json.loads(request.data.decode())
-            self.assertIn("Your answer was successfully added",
-                          response['message'])
+            self.assertIn("Your answer was successfully added", response['message'])
         
     def test_update_answer(self):
         ''' this method tests that an answer can be added to a question '''

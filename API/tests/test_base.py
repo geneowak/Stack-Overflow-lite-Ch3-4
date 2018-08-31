@@ -18,6 +18,7 @@ class BaseCase(unittest.TestCase):
         with self.client as client:
             ''' create all tables before first request '''
             dbHandle = DbHandler()
+            dbHandle.drop_all_tables()
             dbHandle.create_tables()
             dbHandle.close_conn()
             add_test_user(client)

@@ -21,6 +21,7 @@ class TestQuestionApi(unittest.TestCase):
         with self.client as client:
             ''' create all tables before first request '''
             dbHandle = DbHandler()
+            dbHandle.drop_all_tables()
             dbHandle.create_tables()
             dbHandle.close_conn()
             add_test_user(client)
@@ -69,7 +70,7 @@ class TestQuestionApi(unittest.TestCase):
             # try getting the data submitted
             request = get_question(client)
             self.assertEqual(request.status_code, 200)
-            self.assertIn("Stop over bleeding artery", str(request.data))
+            self.assertIn("stop over bleeding artery", str(request.data))
 
     def test_for_correct_qn_title(self):
         ''' this method tests to ensure that the title of the question is a string '''
@@ -97,7 +98,7 @@ class TestQuestionApi(unittest.TestCase):
             response = json.loads(request.data.decode())
             self.assertIn("Sorry, a question with that title has already been asked", response['message'])
             # check with repeated question body
-            request = add_question(client, self.token, {'title':'title2 of question1', 'body':'body1 with of question1 of test'})
+            request = add_question(client, self.token, {'title':'title2 of question1333', 'body':'body1 with of question1 of test'})
             self.assertEqual(request.status_code, 400)
             response = json.loads(request.data.decode())
             self.assertIn("Sorry, a question with that body has already been asked", response['message'])

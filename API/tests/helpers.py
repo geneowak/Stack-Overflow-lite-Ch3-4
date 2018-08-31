@@ -36,11 +36,13 @@ accept_answer_data = {
 }
 correct_user = {
     'username':'geneowak',
-    'password':'helloWorld'
+    'password':'helloWorld22',
+    'email':'helloWorld@uganda.com'
 }
 correct_user2 = {
     'username':'geneowak2',
-    'password':'helloWorld'
+    'password': 'helloWorld222',
+    'email': 'helloWorld@uganda2.com'
 }
 
 def add_test_user(client):
@@ -61,12 +63,12 @@ def auth_header(token):
     }
 
 
-def login(client, username, password):
+def login(client, username, password, email):
     return client.post(add_login_url, data={"username":username, "password":password})
 
 
-def sign_up(client, username, password):
-    return client.post(add_register_user_url, data={"username": username, "password": password})
+def sign_up(client, username, password, email):
+    return client.post(add_register_user_url, data={"username": username, "password": password, "email": email})
 
 
 def add_question(client, token, question):

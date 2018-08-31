@@ -18,6 +18,7 @@ class TestUserApi(unittest.TestCase):
         with self.client as client:
             ''' create all tables before first request '''
             dbHandle = DbHandler()
+            dbHandle.drop_all_tables()
             dbHandle.create_tables()
             dbHandle.close_conn()
             add_test_user(client)
@@ -38,7 +39,7 @@ class TestUserApi(unittest.TestCase):
             # add a questions
             request = sign_up(client, **correct_user)
             response = json.loads(request.data.decode())
-            self.assertIn("User geneowak already exists", response['message'])
+            self.assertIn("User 'geneowak' already exists", response['message'])
             self.assertEqual(request.status_code, 400)
 
     def test_login(self):
