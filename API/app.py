@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from API.resources.question import Questions, QuestionList
 from API.resources.answer import Answers, AnswerList, UpdateAnswer
 from API.resources.comment import CommentList, QuestionComments, AnswerComments
-from API.resources.user import RegisterUser, Login
+from API.resources.user import RegisterUser, Login, UserAnswers, UserQuestions
 
 from API.database.db_handler import DbHandler
 
@@ -66,13 +66,16 @@ api.add_resource(Questions, '/api/v1/questions/<string:questionId>')
 api.add_resource(QuestionList, '/api/v1/questions')
 api.add_resource(AnswerList, '/api/v1/answers')
 api.add_resource(Answers, '/api/v1/questions/<string:questionId>/answers')
-api.add_resource(CommentList, '/api/v1/comments')
-api.add_resource(QuestionComments, '/api/v1/questions/<string:questionId>/comments')
-api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
+# api.add_resource(CommentList, '/api/v1/comments')
+# api.add_resource(QuestionComments, '/api/v1/questions/<string:questionId>/comments')
+# api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
 
 api.add_resource(RegisterUser, '/api/v1/auth/signup')
 api.add_resource(Login, '/api/v1/auth/login')
 api.add_resource(UpdateAnswer, '/api/v1/questions/<string:questionId>/answers/<string:answerId>')
+
+api.add_resource(UserAnswers, '/api/v1/users/answers')
+api.add_resource(UserQuestions, '/api/v1/users/questions')
 
 # if __name__ == "__main__":
 #     app.config.from_object(app_config['development'])

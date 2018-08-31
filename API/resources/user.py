@@ -1,6 +1,8 @@
 from flask_restful import Resource, reqparse
 from API.models.user import UserModel
-from flask_jwt_extended import create_access_token
+from API.models.question import Question
+from API.models.answer import Answer
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .utilities import validate_email, validate_password, validate_username, username_requirements, password_requirements
 
 
@@ -91,3 +93,19 @@ class Login(Resource):
             }, 200
         else:
             return {"message": "Wrong username or password"}, 401
+
+
+class UserQuestions(Resource):
+    """ this method handles user questions """
+    @jwt_required
+    def get(self):
+        """ this method gets questions asked by the user """
+        return {"questions": Question.get_questions_by_user_id(get_jwt_identity())}
+        
+class UserAnswers(Resource):
+    
+    @jwt_required
+    def get(self):
+        """ this method gets questions asked by the user """
+        return {"answers": Answer.get_answers_by_user_id(get_jwt_identity())}
+        
