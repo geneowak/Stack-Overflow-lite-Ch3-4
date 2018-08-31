@@ -34,9 +34,12 @@ update_answer_data = {
 accept_answer_data = {
 	"action": "accept"
 }
-
 correct_user = {
     'username':'geneowak',
+    'password':'helloWorld'
+}
+correct_user2 = {
+    'username':'geneowak2',
     'password':'helloWorld'
 }
 

@@ -49,19 +49,20 @@ class Questions(Resource):
         if db_question:
             if db_question.user_id == user_id:
                 ''' validate data sent '''
-                if not clean_input(data['body']):
+                body = data['body'].strip().lower()
+                if not clean_input(body):
                     return {'message': 'The body should be a string'}, 400
 
-                if not check_description_length(data['body']):
+                if not check_description_length(body):
                     return {'message': 'The question description is too short'}, 400
 
                 ''' validate that the question hasn't been asked before '''
 
-                if Question.check_qn_body(data['body']):
+                if Question.check_qn_body(body):
                     return {'message': 'Sorry, that question with already exits'}, 400
 
                 try:
-                    if Question.update_question(db_question.qn_id, data['body']):
+                    if Question.update_question(db_question.qn_id, body):
                         return {"message": "Question was successfully updated"}, 200
                         
                     return {"message": "Question was not updated, Please try again later..."}, 500
@@ -96,28 +97,30 @@ class QuestionList(Resource):
         )
         data = parser.parse_args()
         ''' validate data sent '''
-        if not clean_input(data['title']):
+        body = data['body'].strip().lower()
+        title = body.strip().lower()
+        if not clean_input(title):
             return {'message': 'The title should be a string'}, 400
         
-        if not check_title_length(data['title']):
+        if not check_title_length(title):
             return {'message': 'The title should be at least 8 characters'}, 400
 
-        if not clean_input(data['body']):
+        if not clean_input(body):
             return {'message': 'The body should be a string'}, 400
             
-        if not check_description_length(data['body']):
+        if not check_description_length(body):
             return {'message': 'The question description is too short.'}, 400
             
         ''' validate that the question hasn't been asked before '''
-        if Question.check_qn_title(data['title']):
+        if Question.check_qn_title(title):
             return {'message': 'Sorry, a question with that title has already been asked'}, 400
 
-        if Question.check_qn_body(data['body']):
+        if Question.check_qn_body(body):
             return {'message': 'Sorry, a question with that body has already been asked'}, 400
         
         user_id = get_jwt_identity()
         # print(user_id, "userid")
-        question = Question(data['title'], data['body'], user_id)
+        question = Question(title, body, user_id)
 
         try:
             question.add_question(question)

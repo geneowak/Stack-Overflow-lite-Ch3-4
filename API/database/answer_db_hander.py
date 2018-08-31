@@ -69,6 +69,18 @@ class AnswerHandler(DbHandler):
             pprint(error)
             super().close_conn()
             return False
+
+    def get_answer_by_qn_id(self, ans_id, qn_id):
+        try:
+            query = "SELECT body, qn_id, user_id, ans_id FROM answers WHERE qn_id=%s and ans_id=%s"
+            self.cursor.execute(query, (qn_id, ans_id))
+            rows = self.cursor.fetchone()
+            super().close_conn()
+            return rows
+        except (Exception) as error:
+            pprint(error)
+            super().close_conn()
+            return False
             
     def get_answers_by_ans_id(self, ans_id):
         try:

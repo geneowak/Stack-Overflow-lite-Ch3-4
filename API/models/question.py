@@ -1,5 +1,6 @@
 import datetime
 from API.database.question_db_handler import QuestionHandler
+from API.database.user_db_handler import UserHandler
 
 class Question:
     ''' cols in tb: qn_id, title, body, user_id, create_date '''
@@ -13,9 +14,11 @@ class Question:
         self.comments = []
 
     def json(self):
+        handle = UserHandler()
+        user = handle.get_user_by_id(self.user_id)
         return {
             "qn_id": self.qn_id,
-            "user_id": self.user_id,
+            "username": user['username'],
             "question": self.title,
             "description": self.body,
             "answers": self.answers,

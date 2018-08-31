@@ -9,16 +9,14 @@ class UserHandler(DbHandler):
     def __init__(self):
         super().__init__()
         
-    def insert_user(self, username, password):
+    def insert_user(self, username, password, email):
         try:
-            query = "INSERT INTO users(username, password, create_date) VALUES (%s,%s,%s)"
-            self.cursor.execute(query,(username, password, datetime.datetime.now()))
+            query = "INSERT INTO users(username, password, email, create_date) VALUES (%s,%s,%s, %s)"
+            self.cursor.execute(query,(username, password, email, datetime.datetime.now()))
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
-            self.conn.close()
-            return False
+            raise error
 
     def update_username(self, user_id, username):
         try:
@@ -27,25 +25,31 @@ class UserHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
-            super().close_conn()
-            return False
+            raise error
 
     def get_user_by_id(self, user_id):
         try:
-            query = "SELECT username, password, user_id FROM users WHERE user_id={}"
-            self.cursor.execute(query.format(user_id))
+            query = "SELECT username, password, user_id, user_id, email FROM users WHERE user_id=%s"
+            self.cursor.execute(query,(user_id,))
             row = self.cursor.fetchone()
             super().close_conn()
             return row
         except (Exception) as error:
-            pprint(error)
-            # super().close_conn()
-            return False
+            raise error
+
+    def get_user_by_email(self, email):
+        try:
+            query = "SELECT username, password, user_id, user_id, email FROM users WHERE email=%s"
+            self.cursor.execute(query,(email,))
+            row = self.cursor.fetchone()
+            super().close_conn()
+            return row
+        except (Exception) as error:
+            raise error
 
     def get_user_by_username(self, username):
         try:
-            query = "SELECT username, password, user_id FROM users WHERE username=%s"
+            query = "SELECT username, password, user_id, email FROM users WHERE username=%s"
             self.cursor.execute(query, (username,))
             row = self.cursor.fetchone()
             pprint(row)
@@ -53,10 +57,7 @@ class UserHandler(DbHandler):
             super().close_conn()
             return row
         except (Exception) as error:
-            pprint(error)
-            print("there was an exception...")
-            super().close_conn()
-            return False
+            raise error
 
     def delete_user(self, username):
         try:
@@ -66,6 +67,4 @@ class UserHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
-            self.conn.close()
-            return False
+            raise error

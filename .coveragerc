@@ -9,4 +9,5 @@ omit=
    */__init__.py
    ./API/__init__.py
    ./API/config.py
+   ./API/resources/comment.py 
    

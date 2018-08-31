@@ -31,19 +31,20 @@ class Answers(Resource):
         )
 
         data = parser.parse_args()
+        body = data['body'].strip().lower()
         ''' validate data sent '''
-        if not clean_input(data['body']):
+        if not clean_input(body):
             return {'message': 'The body should be a string'}, 400
 
-        if not check_answer_length(data['body']):
+        if not check_answer_length(body):
             return {'message': 'Answer is too short'}, 400
         
         ''' validate that the question hasn't been asked before '''
-        if Answer.check_ans_body(data['body'], questionId):
+        if Answer.check_ans_body(body, questionId):
             return {'message': 'Sorry, that answer has already been given'}, 400
 
         user_id = get_jwt_identity()
-        answer = Answer(data['body'], questionId, user_id)
+        answer = Answer(body, questionId, user_id)
         try:
             if Answer.add_answer(answer) == True:
                 return {'message': 'Your answer was successfully added'}, 201
@@ -74,25 +75,24 @@ class UpdateAnswer(Resource):
         )
         parser.add_argument('body', type=str)
         data = parser.parse_args()
-        action = data['action']
-        print(action)
+        action = data['action'].strip()
+        # print(action)
 
         if action.lower() != 'update' and action.lower() != 'accept':
             return {'message': 'The action value should be update or accept'}, 400
-
 
         user_id = get_jwt_identity()
         db_question = Question.get_question_by_id(questionId)
         if not db_question:
             return {'message': 'Question not found'}, 404
         
-        answer = Answer.get_answer_by_id(answerId)
+        answer = Answer.get_answer_by_id(answerId, questionId)
         if answer:
             print(db_question.json())
             print(answer.json())
             if action.lower() == 'update':
                 if answer.user_id == user_id:
-                    body = data['body']
+                    body = data['body'].lower().strip()
                     if not body:
                         return {'message': 'The body should not be empty'}, 400
 

@@ -23,7 +23,6 @@ class DbHandler:
 
         except (Exception, psycopg2.DatabaseError) as error:
             raise error
-            pprint(error)
 
     def close_conn(self):
         self.cursor.close()

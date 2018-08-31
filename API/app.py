@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
@@ -48,6 +48,19 @@ def create_tables():
 @app.route('/')
 def get_def_page():
    return render_template('index.html')
+
+""" custom error handlers """
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({'message': "Page not found. If you entered the URL manually please check your spelling and try again."}), 404
+    
+@app.errorhandler(403)
+def forbidden(error):
+    return jsonify({'message':"Sorry you don't have access to that resource. Try logging in."}), 403
+    
+@app.errorhandler(500)
+def server_error(error):
+    return jsonify({'message':"Sorry there was an error processing your request. Please review it and try again."}), 500
 
 api.add_resource(Questions, '/api/v1/questions/<string:questionId>')
 api.add_resource(QuestionList, '/api/v1/questions')
