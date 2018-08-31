@@ -52,14 +52,15 @@ These are the endpoints that are currently available
 |------|-------------|------------|
 |GET|  /api/v1/questions       | Fetch all questions     |
 |GET| /api/v1/questions/\<int:questionId\>        | Fetch a specific question |
-|PUT| /api/v1/questions/\<int:questionId\>        | Update a question |
+|GET|  /api/v1/users/answers        | Get answers for all logged in user     |
+|GET|  /api/v1/questions/\<int:questionId\>/answers       | Add an answer     |
+|POST|  /api/v1/users/question        | Get questions for all logged in user      |
 |POST|  /api/v1/questions       | Add a question     |
 |POST|  /api/v1/answers       | Get answers     |
-|GET|  /api/v1/questions/\<int:questionId\>/answers       | Add an answer     |
 |PUT|  /api/v1/questions/\<int:questionId\>/answers/\<int:answerId\>       | Update answer     |
 |PUT|  /api/v1/questions/\<int:questionId\>/answers /\<int:answerId\>      | Accept answer     |
-|POST|  /api/v1/users/question        | Get questions for all logged in user      |
-|GET|  /api/v1/users/answers        | Get answers for all logged in user     |
+|PUT| /api/v1/questions/\<int:questionId\>        | Update a question |
+|DELETE| /api/v1/questions/\<int:questionId\>        | Delete a question |
 
 ## Running the tests
 
