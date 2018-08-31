@@ -70,8 +70,8 @@ class AnswerComments(Resource):
             return {"message": "The answer id should be a float"}, 400
 
         # check if the question exists
-        if not Answer.get_answer_by_id(answerId):
-            return {"message": "Sorry, that answer doesn't exist"}, 400
+        # if not Answer.get_answer_by_id(answerId):
+        #     return {"message": "Sorry, that answer doesn't exist"}, 400
 
         parser = reqparse.RequestParser()
         parser.add_argument(

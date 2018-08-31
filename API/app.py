@@ -18,26 +18,6 @@ jwt = JWTManager(app)
 
 api = Api(app)
 
-''' 
-# end points to develop
-
-GET /questions Fetch all questions
-GET /questions/<questionId> | Fetch a specific question | This should come with the all  answers provided so far for the question.
-POST /questions Add a question
-POST /questions/<questionId>/answers Add an answer
-
-POST /questions/<questionId>/comments Add an add a comment to a question
-POST /answers/<answerId>/comments Add an add a comment to an answer
-
-
-POST /auth/signup | Register a user
-POST /auth/login | Login a user
-Delete /questions/<questionId> | Delete a question | This endpoint should be available to the author’s author.
-PUT /questions/<questionId>/answers/<answerId> | Mark an answer as accepted | available to only the question author.
-PUT /questions/<questionId>/answers/<answerId> | update an answer. | available to only the answer author.
-
- '''
-
 @app.before_first_request
 def create_tables():
     ''' create all tables before first request '''
@@ -49,17 +29,20 @@ def create_tables():
 def get_def_page():
    return render_template('index.html')
 
-""" custom error handlers """
+""" custom error handlers to catch and display error messages for errors not handled by the app """
 @app.errorhandler(404)
 def page_not_found(error):
+    """ This method catches errors resulting from bad url requests """
     return jsonify({'message': "Page not found. If you entered the URL manually please check your spelling and try again."}), 404
     
 @app.errorhandler(403)
 def forbidden(error):
+    """ This method catches errors resulting from a user trying to access protected resources without logging in """
     return jsonify({'message':"Sorry you don't have access to that resource. Try logging in."}), 403
     
 @app.errorhandler(500)
 def server_error(error):
+    """ This method catches internal server errors that are not handled by the app """
     return jsonify({'message':"Sorry there was an error processing your request. Please review it and try again."}), 500
 
 api.add_resource(Questions, '/api/v1/questions/<string:questionId>')
