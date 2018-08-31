@@ -93,6 +93,18 @@ class AnswerHandler(DbHandler):
             pprint(error)
             super().close_conn()
             return False
+            
+    def get_answers_by_ans_user_id(self, user_id):
+        try:
+            query = "SELECT body, qn_id, user_id, ans_id FROM answers WHERE user_id=%s"
+            self.cursor.execute(query, (user_id,))
+            rows = self.cursor.fetchall()
+            super().close_conn()
+            return rows
+        except (Exception) as error:
+            pprint(error)
+            super().close_conn()
+            return False
 
     def get_answers(self):
         try:

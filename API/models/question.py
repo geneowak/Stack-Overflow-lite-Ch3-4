@@ -62,6 +62,23 @@ class Question:
         return questionsList
 
     @classmethod
+    def get_questions_by_user_id(cls, user_id):
+        handle = QuestionHandler()
+        questions = handle.get_questions_by_user_id(user_id)
+        questionsList = []
+        # print(questions)
+        if questions:
+            for question in questions:
+                qn = Question(question['title'], question['body'],question['user_id'],question['qn_id'])
+                questionsList.append(qn)
+
+            return [ x.json() for x in questionsList] 
+        # from .answer import Answer
+        # for qn in cls.questions:
+        #     qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
+        return questionsList
+
+    @classmethod
     def check_qn_title(cls, title):
         ''' check if a question has been asked before '''
         handle = QuestionHandler()

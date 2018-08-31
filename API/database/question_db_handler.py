@@ -55,6 +55,19 @@ class QuestionHandler(DbHandler):
             pprint(error)
             super().close_conn()
             return None
+        
+    def get_questions_by_user_id(self, user_id):
+        try:
+            query = "SELECT title, body, user_id, qn_id FROM questions WHERE user_id=%s"
+            self.cursor.execute(query, (user_id,))
+            rows = self.cursor.fetchall()
+            # print(rows)
+            super().close_conn()
+            return rows
+        except (Exception) as error:
+            pprint(error)
+            super().close_conn()
+            return None
 
     def update_question(self, qn_id, body):
         try:
