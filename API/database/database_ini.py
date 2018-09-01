@@ -26,7 +26,7 @@ def db_tables():
     create_questions_tb = """CREATE TABLE IF NOT EXISTS {} (
         qn_id serial PRIMARY KEY,
         title VARCHAR (100) NOT NULL,
-        body VARCHAR (255) NOT NULL,
+        description VARCHAR (255) NOT NULL,
         user_id INTEGER NOT NULL,
         create_date TIMESTAMP,
         FOREIGN KEY(user_id)
@@ -35,7 +35,7 @@ def db_tables():
         )""".format(tb_names["questions"])
     create_answers_tb = """CREATE TABLE IF   NOT EXISTS {} (
         ans_id serial PRIMARY KEY,
-        body VARCHAR (255) NOT NULL,
+        answer VARCHAR (255) NOT NULL,
         qn_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         preferred VARCHAR (10) DEFAULT 'false',
@@ -49,7 +49,7 @@ def db_tables():
         )""".format(tb_names["answers"])
     create_question_comments_tb = """CREATE TABLE IF  NOT EXISTS {} (
         id serial PRIMARY KEY,
-        body VARCHAR (255) NOT NULL,
+        comment VARCHAR (255) NOT NULL,
         qn_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         create_date TIMESTAMP,
@@ -62,7 +62,7 @@ def db_tables():
         )""".format(tb_names["question_comments"])
     create_answer_comments_tb = """CREATE TABLE IF  NOT EXISTS {} (
         id serial PRIMARY KEY,
-        body VARCHAR (255) NOT NULL,
+        comment VARCHAR (255) NOT NULL,
         ans_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         create_date TIMESTAMP,
