@@ -27,7 +27,8 @@ def create_tables():
  
 @app.route('/')
 def get_def_page():
-   return render_template('index.html')
+    ''' This method displays the default page when the application loads '''
+    return render_template('index.html')
 
 """ custom error handlers to catch and display error messages for errors not handled by the app """
 @app.errorhandler(404)

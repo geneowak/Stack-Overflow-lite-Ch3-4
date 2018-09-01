@@ -6,7 +6,11 @@ from .database_ini import development_db_config, test_db_config, db_tables, tabl
 
 
 class DbHandler:
+    ''' 
+    This class is the base database class that handles general actions on the database
+    '''
     def __init__(self):
+        ''' creates connection and a cursor objects '''
         try:
             from API.app import app
             if os.getenv('FLASK_ENV') == 'HEROKU11':
@@ -25,11 +29,12 @@ class DbHandler:
             raise error
 
     def close_conn(self):
+        ''' closes the connection to the database '''
         self.cursor.close()
         self.conn.close()
 
     def create_tables(self):
-        # create the db tables if they don't exit
+        ''' creates the tables in the database if they don't exit '''
         # pprint("Creating tables....")
         for table in db_tables():
             # pprint(table)
@@ -37,9 +42,9 @@ class DbHandler:
         # pprint("Created tables....")
 
     def drop_all_tables(self):
-        tb_names = table_names()
-        for key in tb_names:
-            self.cursor.execute("DROP TABLE IF EXISTS {} CASCADE".format(tb_names[key]))
+        ''' deletes all the tables in the database '''
+        for key in table_names:
+            self.cursor.execute("DROP TABLE IF EXISTS {} CASCADE".format(table_names[key]))
     
 
 # if __name__ == '__main__':

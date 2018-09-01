@@ -58,7 +58,7 @@ class Questions(Resource):
 
                 ''' validate that the question hasn't been asked before '''
 
-                if Question.check_qn_body(body):
+                if Question.check_qn_description(body):
                     return {'message': 'Sorry, that question with already exits'}, 400
 
                 try:
@@ -115,7 +115,7 @@ class QuestionList(Resource):
         if Question.check_qn_title(title):
             return {'message': 'Sorry, a question with that title has already been asked'}, 400
 
-        if Question.check_qn_body(body):
+        if Question.check_qn_description(body):
             return {'message': 'Sorry, a question with that body has already been asked'}, 400
         
         user_id = get_jwt_identity()

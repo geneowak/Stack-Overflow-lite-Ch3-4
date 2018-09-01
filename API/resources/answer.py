@@ -40,7 +40,7 @@ class Answers(Resource):
             return {'message': 'Answer is too short'}, 400
         
         ''' validate that the question hasn't been asked before '''
-        if Answer.check_ans_body(body, questionId):
+        if Answer.check_repeated_ans(body, questionId):
             return {'message': 'Sorry, that answer has already been given'}, 400
 
         user_id = get_jwt_identity()
@@ -86,7 +86,7 @@ class UpdateAnswer(Resource):
         if not db_question:
             return {'message': 'Question not found'}, 404
         
-        answer = Answer.get_answer_by_id(answerId, questionId)
+        answer = Answer.get_answer_by_qn_id(answerId, questionId)
         if answer:
             print(db_question.json())
             print(answer.json())
@@ -104,7 +104,7 @@ class UpdateAnswer(Resource):
                         return {'message': 'Answer is too short'}, 400
 
                     ''' validate that the answer hasn't been given before '''
-                    if Answer.check_ans_body(body, questionId):
+                    if Answer.check_repeated_ans(body, questionId):
                         return {'message': 'Sorry, that answer with already exits'}, 400
                     try:
                         if Answer.update_answer(answer.ans_id, body):
