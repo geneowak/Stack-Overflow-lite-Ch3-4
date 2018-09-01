@@ -1,5 +1,6 @@
 import datetime
 from API.database.question_db_handler import QuestionHandler
+from API.database.user_db_handler import UserHandler
 
 class Question:
     ''' cols in tb: qn_id, title, body, user_id, create_date '''
@@ -13,9 +14,11 @@ class Question:
         self.comments = []
 
     def json(self):
+        handle = UserHandler()
+        user = handle.get_user_by_id(self.user_id)
         return {
             "qn_id": self.qn_id,
-            "user_id": self.user_id,
+            "username": user['username'],
             "question": self.title,
             "description": self.body,
             "answers": self.answers,
@@ -47,6 +50,23 @@ class Question:
         handle = QuestionHandler()
         questions = handle.get_questions()
         questionsList = []
+        if questions:
+            for question in questions:
+                qn = Question(question['title'], question['body'],question['user_id'],question['qn_id'])
+                questionsList.append(qn)
+
+            return [ x.json() for x in questionsList] 
+        # from .answer import Answer
+        # for qn in cls.questions:
+        #     qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
+        return questionsList
+
+    @classmethod
+    def get_questions_by_user_id(cls, user_id):
+        handle = QuestionHandler()
+        questions = handle.get_questions_by_user_id(user_id)
+        questionsList = []
+        # print(questions)
         if questions:
             for question in questions:
                 qn = Question(question['title'], question['body'],question['user_id'],question['qn_id'])

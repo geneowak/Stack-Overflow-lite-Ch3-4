@@ -1,7 +1,7 @@
 # StackOverflow-lite
 
-[![Build Status](https://travis-ci.com/geneowak/-StackOverflow-lite.svg?branch=version_1)](https://travis-ci.com/geneowak/-StackOverflow-lite)
-[![Coverage Status](https://coveralls.io/repos/github/geneowak/-StackOverflow-lite/badge.svg?branch=version_1)](https://coveralls.io/github/geneowak/-StackOverflow-lite?branch=version_1)
+[![Build Status](https://travis-ci.com/geneowak/Stack-Overflow-lite-Ch3-4.svg?branch=addons)](https://travis-ci.com/geneowak/Stack-Overflow-lite-Ch3-4)
+[![Coverage Status](https://coveralls.io/repos/github/geneowak/Stack-Overflow-lite-Ch3-4/badge.svg?branch=addons)](https://coveralls.io/github/geneowak/Stack-Overflow-lite-Ch3-4?branch=addons)
 [![Maintainability](https://api.codeclimate.com/v1/badges/38f513cdfe1984e4be8a/maintainability)](https://codeclimate.com/github/geneowak/-StackOverflow-lite/maintainability)
 
 ## Description
@@ -52,12 +52,15 @@ These are the endpoints that are currently available
 |------|-------------|------------|
 |GET|  /api/v1/questions       | Fetch all questions     |
 |GET| /api/v1/questions/\<int:questionId\>        | Fetch a specific question |
+|GET|  /api/v1/users/answers        | Get answers for all logged in user     |
+|GET|  /api/v1/questions/\<int:questionId\>/answers       | Add an answer     |
+|POST|  /api/v1/users/question        | Get questions for all logged in user      |
 |POST|  /api/v1/questions       | Add a question     |
 |POST|  /api/v1/answers       | Get answers     |
-|GET|  /api/v1/questions/\<int:questionId\>/answers       | Add an answer     |
-|POST|  /api/v1/questions/\<int:questionId\>/comments       | Add a comment to a question     |
-|POST|  /api/v1/answers/\<int:answerId\>/comments        | Add a comment to an answer     |
-|GET|  /api/v1/comments        | Get comments     |
+|PUT|  /api/v1/questions/\<int:questionId\>/answers/\<int:answerId\>       | Update answer     |
+|PUT|  /api/v1/questions/\<int:questionId\>/answers /\<int:answerId\>      | Accept answer     |
+|PUT| /api/v1/questions/\<int:questionId\>        | Update a question |
+|DELETE| /api/v1/questions/\<int:questionId\>        | Delete a question |
 
 ## Running the tests
 

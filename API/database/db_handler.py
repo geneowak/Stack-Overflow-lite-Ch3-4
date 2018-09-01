@@ -1,3 +1,4 @@
+import os
 import psycopg2
 import psycopg2.extras
 from pprint import pprint
@@ -8,17 +9,20 @@ class DbHandler:
     def __init__(self):
         try:
             from API.app import app
-            if app.config['TESTING']:
+            if os.getenv('FLASK_ENV') == 'HEROKU11':
+                self.conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+                # pprint("Using HEROKU db....")
+            elif app.config['TESTING']:
                 self.conn = psycopg2.connect(**test_db_config)
-                pprint("Using test db....")
+                # pprint("Using test db....")
             else:
                 self.conn = psycopg2.connect(**development_db_config)
-                pprint("Using development db....")
+                # pprint("Using development db....")
             self.conn.autocommit = True
             self.cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         except (Exception, psycopg2.DatabaseError) as error:
-            pprint(error)
+            raise error
 
     def close_conn(self):
         self.cursor.close()

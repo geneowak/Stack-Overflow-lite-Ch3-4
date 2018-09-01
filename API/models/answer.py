@@ -54,8 +54,8 @@ class Answer:
         answers = handle.get_answers_by_qn_id(qn_id)
         answersList = []
         if answers:
-            for answer in answers:
-                ans = Answer(answer[0], answer[1], answer[2], answer[3])
+            for answer in answers:  # body, qn_id, user_id, ans_id
+                ans = Answer(answer['body'], answer['qn_id'], answer["user_id"], answer["ans_id"])
                 answersList.append(ans)
 
             # append comments....
@@ -70,20 +70,46 @@ class Answer:
         return handle.check_body(body, qn_id)
 
     @classmethod
-    def get_answer_by_id(cls, answerId):
+    def get_answer_by_id(cls, answerId, qn_id):
+        handle = AnswerHandler()
+        answer = handle.get_answer_by_qn_id(answerId, qn_id)
+        print('printing answer...')
+        print(answer)
+        if answer:  # body, qn_id, user_id, ans_id
+            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+        return None
+
+    @classmethod
+    def get_answer_by_qn_id(cls, answerId):
         handle = AnswerHandler()
         answer = handle.get_answers_by_ans_id(answerId)
         print(answer)
         if answer:
-            return Answer(answer[0], answer[1], answer[2], answer[3])
+            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
         return None
+
+    @classmethod
+    def get_answers_by_user_id(cls, user_id):
+        handle = AnswerHandler()
+        answers = handle.get_answers_by_ans_user_id(user_id)
+        # print(answer)
+        answersList = []
+        if answers:
+            for answer in answers:  # body, qn_id, user_id, ans_id
+                ans = Answer(answer['body'], answer['qn_id'],answer["user_id"], answer["ans_id"])
+                answersList.append(ans)
+
+            # append comments....
+
+            return [x.json() for x in answersList]
+        return answersList
 
     @classmethod
     def update_answer(cls, ans_id, body):
         print("ans_id:", ans_id, " body:", body)
         handle = AnswerHandler()
         question = handle.update_answer(ans_id, body)
-        print(question)
+        # print(question)
         if question:
             return True
         return False

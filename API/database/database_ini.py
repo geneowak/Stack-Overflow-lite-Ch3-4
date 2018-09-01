@@ -1,17 +1,15 @@
 development_db_config = {
-    "host": "localhost",
-    "database": "stack_over_flow_app",
-    "port": 5432,
-    "user": "stackOverflow",
-    "password": "hello$$123"
+    'host':'localhost',
+    "dbname": "stack_over_flow_app",
+    "password": 'postgres',
+    "user": "postgres",
 }
 
 test_db_config = {
-    "host":"localhost", 
-    "database": "test_db",
-    "port": 5432,
+    'host':'localhost',
+    "dbname": "test_db",
+    "password": 'postgres',
     "user": "postgres",
-    "password": ""
 }
 
 
@@ -20,6 +18,7 @@ def db_tables():
     create_user_tb = """CREATE TABLE IF NOT EXISTS {} (
         user_id serial PRIMARY KEY,
         username VARCHAR (50) UNIQUE NOT NULL,
+        email VARCHAR (100) UNIQUE NOT NULL,
         password VARCHAR (100) NOT NULL,
         create_date TIMESTAMP NOT NULL,
         last_login TIMESTAMP DEFAULT NULL
