@@ -1,19 +1,23 @@
 from .question import Question
+from API.database.answer_db_hander import AnswerHandler
+from pprint import pprint
 
 class Answer:
     ''' this class will handle all the data processing for answers '''
-    answers = []
     
-    def __init__(self, _id, body, qn_id):
-        self.id = _id
+    def __init__(self, body, qn_id, user_id, ans_id = None):
+        self.ans_id = ans_id
         self.body = body
         self.qn_id = qn_id
+        self.user_id = user_id
         self.comments = []
 
     def json(self):
         return {
-            "id": self.id,
-            "body": self.body,
+            "ans_id": self.ans_id,
+            "qn_id": self.qn_id,
+            "user_id": self.user_id,
+            "answer": self.body,
             "comments": self.comments
         }
 
@@ -22,57 +26,99 @@ class Answer:
         ''' this first checks if a question exists and if it does, it adds an answer to it
         True is returned for success and False when it fails to add the answer '''
         if Question.get_question_by_id(answer.qn_id):
-            ans ={
-                "id": answer.id,
-                "body": answer.body,
-                "qn_id": answer.qn_id,
-                "comments": []
-            }
-            cls.answers.append(ans)
-            try:
-                Question.add_answer(answer.qn_id, ans)
-            except:           
-                return False
-            return True
-        return False
-
-    @classmethod
-    def add_comment(cls, answerId, comment):
-        answer = cls.get_answer_by_id(answerId)
-        if answer:
-            answer['comments'].append(comment)
+            handle = AnswerHandler()
+            pprint(answer.json())
+            handle.insert_answer(answer.user_id, answer.qn_id, answer.body)
             return True
         return False
 
     @classmethod
     def get_answers(cls):
-        return cls.answers
+        handle = AnswerHandler()
+        answers = handle.get_answers()
+        answersList = []
+        if answers:
+            for answer in answers:
+                qn = Answer(answer[0], answer[1], answer[2], answer[3])
+                answersList.append(qn)
+
+            return [x.json() for x in answersList]
+        # from .answer import Answer
+        # for qn in cls.questions:
+        #     qn['answers'].extend(Answer.get_answers_by_qn_id(qn['id']))
+        return answersList
 
     @classmethod
     def get_answers_by_qn_id(cls, qn_id):
-        return list(filter(lambda ans: ans['qn_id'] == qn_id, cls.answers))
-        
-    @classmethod
-    def get_no_of_ans(cls):
-        return len(cls.answers)
+        handle = AnswerHandler()
+        answers = handle.get_answers_by_qn_id(qn_id)
+        answersList = []
+        if answers:
+            for answer in answers:  # body, qn_id, user_id, ans_id
+                ans = Answer(answer['body'], answer['qn_id'], answer["user_id"], answer["ans_id"])
+                answersList.append(ans)
+
+            # append comments....
+
+            return [x.json() for x in answersList]
+        return answersList
 
     @classmethod
     def check_ans_body(cls, body, qn_id):
         ''' check if an answer has already been given '''
-        for ans in cls.answers:
-            if str(ans['qn_id']) == str(qn_id):
-                if ans['body'].lower() == body.lower():
-                    return True
+        handle = AnswerHandler()
+        return handle.check_body(body, qn_id)
+
+    @classmethod
+    def get_answer_by_id(cls, answerId, qn_id):
+        handle = AnswerHandler()
+        answer = handle.get_answer_by_qn_id(answerId, qn_id)
+        print('printing answer...')
+        print(answer)
+        if answer:  # body, qn_id, user_id, ans_id
+            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+        return None
+
+    @classmethod
+    def get_answer_by_qn_id(cls, answerId):
+        handle = AnswerHandler()
+        answer = handle.get_answers_by_ans_id(answerId)
+        print(answer)
+        if answer:
+            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+        return None
+
+    @classmethod
+    def get_answers_by_user_id(cls, user_id):
+        handle = AnswerHandler()
+        answers = handle.get_answers_by_ans_user_id(user_id)
+        # print(answer)
+        answersList = []
+        if answers:
+            for answer in answers:  # body, qn_id, user_id, ans_id
+                ans = Answer(answer['body'], answer['qn_id'],answer["user_id"], answer["ans_id"])
+                answersList.append(ans)
+
+            # append comments....
+
+            return [x.json() for x in answersList]
+        return answersList
+
+    @classmethod
+    def update_answer(cls, ans_id, body):
+        print("ans_id:", ans_id, " body:", body)
+        handle = AnswerHandler()
+        question = handle.update_answer(ans_id, body)
+        # print(question)
+        if question:
+            return True
         return False
 
     @classmethod
-    def get_answer_by_id(cls, answerId):
-        try:
-            # check if answer id is in required format
-            answerId = float(answerId)
-        except:
-            return None
-        for ans in cls.answers:
-            if float(ans['id']) == answerId:
-                return ans
-        return None
+    def accept_answer(cls, ans_id, qn_id):
+        print("ans_id:", ans_id, " qn_id:", qn_id)
+        handle = AnswerHandler()
+        question = handle.accept_answer(ans_id, qn_id)
+        if question:
+            return True
+        return False

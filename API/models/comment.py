@@ -32,10 +32,6 @@ class Comment:
                     "parent_id": comment.parent_id
                 }
                 cls.comments.append(comm)
-                try:
-                    Question.add_comment(comment.parent_id, comm)
-                except:
-                    return False
                 return True
             return False
         elif comment.parent.lower() == 'answer':
