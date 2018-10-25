@@ -83,7 +83,7 @@ class Answer:
     @classmethod
     def get_answer_by_ans_id(cls, answerId):
         handle = AnswerHandler()
-        answer = handle.get_answers_by_ans_id(answerId)
+        answer = handle.get_answer_by_ans_id(answerId)
         print(answer)
         if answer:
             return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"])

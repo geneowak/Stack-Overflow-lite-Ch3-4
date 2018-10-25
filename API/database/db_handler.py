@@ -17,12 +17,12 @@ class DbHandler:
                 self.conn = psycopg2.connect(os.getenv('DATABASE_URL'))
                 # pprint("Using HEROKU db....")
             elif app.config['TESTING']:
-                pprint("....creating database...")
+                # create database table if it doesn't exist
                 self.create_database(test_db_config)
                 self.conn = psycopg2.connect(**test_db_config)
                 # pprint("Using test db....")
             else:
-                pprint("....creating database...")
+                # create database table if it doesn't exist
                 self.create_database(development_db_config)
                 self.conn = psycopg2.connect(**development_db_config)
                 # pprint("Using development db....")
@@ -52,7 +52,6 @@ class DbHandler:
 
     def create_database(self, dbconfig):
         ''' creates a database if it doesn't exist '''
-        print("....Starting db creation...", str(dbconfig))
 
         try:
             dbname = dbconfig["dbname"]
@@ -72,9 +71,10 @@ class DbHandler:
             cursor.execute(get_db_query)
             # get result
             exists = cursor.fetchone()
-            pprint("....Printing result...")
-            pprint(exists)
+            # pprint("....Printing result...")
+            # pprint(exists)
             if not exists:
+                pprint("Creating tables....")
                 cursor.execute("CREATE DATABASE {}".format(dbname))
 
             # close the connection

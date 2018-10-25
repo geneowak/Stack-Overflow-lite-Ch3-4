@@ -4,8 +4,8 @@ import datetime
 from .database_ini import table_names
 
 
-class CommentHandler(DbHandler):
-    ''' 
+class CommentsHandler(DbHandler):
+    '''
     This method handles all the database functions of the comment model
     '''
 
@@ -19,14 +19,14 @@ class CommentHandler(DbHandler):
     def insert_qn_comment(self, user_id, qn_id, comment):
         ''' adds a question comment to the database '''
         try:
-            query = "INSERT INTO "+self.qn_table_name+" (comment, qn_id, user_id, create_date) VALUES(%s,%s,%s,%s)"
+            query = "INSERT INTO " + self.qn_table_name + " (comment, qn_id, user_id, create_date) VALUES(%s,%s,%s,%s)"
             self.cursor.execute(
                 query, (comment, qn_id, user_id, datetime.datetime.now()))
             # close connection
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -40,7 +40,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -54,7 +54,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return rows
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -68,7 +68,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -83,7 +83,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return row
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             super().close_conn()
             return False
 
@@ -98,7 +98,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -112,7 +112,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -126,7 +126,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return rows
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -140,7 +140,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return True
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
             return False
@@ -155,7 +155,7 @@ class CommentHandler(DbHandler):
             super().close_conn()
             return row
         except (Exception) as error:
-            pprint(error)
+            pprint("and error occured", error)
             super().close_conn()
             return False
 
