@@ -34,7 +34,7 @@ class CommentsHandler(DbHandler):
     def update_qn_comment(self, comment, qn_id):
         ''' updates a question comment in the database '''
         try:
-            query = "UPDATE "+self.ans_table_name + " SET comment=%s WHERE qn_id=%s"
+            query = "UPDATE "+self.qn_table_name + " SET comment=%s WHERE qn_id=%s"
             self.cursor.execute(query, (comment, qn_id))
             # close connection
             super().close_conn()
@@ -48,7 +48,7 @@ class CommentsHandler(DbHandler):
     def get_qn_comment_by_qn_id(self, qn_id):
         ''' returns the specified question comment from the database '''
         try:
-            query = "SELECT comment, id, user_id, qn_id FROM "+self.ans_table_name+" WHERE qn_id=%s"
+            query = "SELECT comment, id, user_id, qn_id FROM "+self.qn_table_name+" WHERE qn_id=%s"
             self.cursor.execute(query, (qn_id,))
             rows = self.cursor.fetchall()
             super().close_conn()
@@ -58,6 +58,18 @@ class CommentsHandler(DbHandler):
             self.conn.rollback()
             super().close_conn()
             return False
+
+    def get_qn_comments(self):
+        try:
+            query = "SELECT comment, id, user_id, qn_id FROM "+self.qn_table_name+""
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            super().close_conn()
+            return rows
+        except (Exception) as error:
+            pprint(error)
+            super().close_conn()
+            return None
 
     def delete_qn_comment_by_qn_id(self, comment_id):
         ''' deletes the specified question comment from the database '''
@@ -130,6 +142,19 @@ class CommentsHandler(DbHandler):
             self.conn.rollback()
             super().close_conn()
             return False
+
+    def get_ans_comments(self):
+        try:
+            query = "SELECT comment, id, user_id, ans_id FROM "+self.ans_table_name+""
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            super().close_conn()
+            return rows
+        except (Exception) as error:
+            pprint("an error occured...")
+            pprint(error)
+            super().close_conn()
+            return None
 
     def delete_ans_comment_by_ans_id(self, comment_id):
         ''' deletes the specified answer comment from the database '''

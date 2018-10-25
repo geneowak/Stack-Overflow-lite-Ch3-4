@@ -52,8 +52,8 @@ class UserHandler(DbHandler):
             query = "SELECT username, password, user_id, email FROM users WHERE username=%s"
             self.cursor.execute(query, (username,))
             row = self.cursor.fetchone()
-            pprint(row)
-            print(username)
+            # pprint(row)
+            # print(username)
             super().close_conn()
             return row
         except (Exception) as error:

@@ -30,6 +30,8 @@ class DbHandler:
             self.cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         except (Exception, psycopg2.DatabaseError) as error:
+            pprint("an error occured...")
+            pprint(error)
             raise error
 
     def close_conn(self):

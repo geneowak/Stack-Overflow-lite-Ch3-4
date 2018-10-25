@@ -51,18 +51,38 @@ class Comment:
             
     @classmethod
     def get_comments(cls):
-        return cls.comments
+        handle = CommentsHandler()
+        qn_comments = handle.get_qn_comments()
+        handle = CommentsHandler()
+        ans_comments = handle.get_ans_comments()
+        pprint(ans_comments)
+        commentsList = {
+            "question_comments":[],
+            "answer_comments":[]
+        }
+        # question comment table cols: id, comment, qn_id, user_id, create_date
+        # answer comment table cols: id, comment, ans_id, user_id, create_date
+        # user_id, comment, parent, parent_id
+        if qn_comments:
+            for comment in qn_comments:
+                qn = Comment(comment["user_id"], comment["comment"], "question", comment["qn_id"])
+                commentsList["question_comments"].append(qn.json())
+        if ans_comments:
+            for comment in ans_comments:
+                qn = Comment(comment["user_id"], comment["comment"], "answer", comment["ans_id"])
+                commentsList["answer_comments"].append(qn.json())
+
+            return commentsList
+        # from .answer import Answer
+        # for qn in cls.questions:
+        #     qn['comments'].extend(Answer.get_comments_by_qn_id(qn['id']))
+        return commentsList
 
     @classmethod
     def get_comments_by_parent_id(cls,parent, parent_id):
         return list(filter(lambda comm: comm['parent'] == parent and comm['parent_id'] == parent_id, cls.comments))
 
-    @classmethod
-    def get_no_of_comments(cls):
-        return len(cls.comments)
-
-    @classmethod
-    def check_for_repeated_comment(cls, comment, parent, parent_id):
+    def check_for_repeated_comment(self):
         ''' check if an comment has already been given '''
         for comm in cls.comments:
             if comm['parent'].lower() == parent.lower():

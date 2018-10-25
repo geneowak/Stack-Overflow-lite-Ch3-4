@@ -16,7 +16,7 @@ POST /answers/<answerId>/comments Add a comment to an answer
 
 
 # load the answers from Model....
-comments = Comment.get_comments()
+# comments = Comment.get_comments()
 
 
 class QuestionComments(Resource):
