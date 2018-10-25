@@ -54,7 +54,7 @@ class AnswerHandler(DbHandler):
             if row:
                 query = "UPDATE "+self.ans_tb_name+" SET preferred=%s WHERE ans_id=%s"
                 self.cursor.execute(query, ('false', row[0]))
-
+            # update preferred answer
             query = "UPDATE "+self.ans_tb_name+" SET preferred=%s WHERE ans_id=%s"
             self.cursor.execute(query, ('true', ans_id))
             super().close_conn()
@@ -68,7 +68,7 @@ class AnswerHandler(DbHandler):
     def get_answers_by_qn_id(self, qn_id):
         ''' gets all the answers of a given question '''
         try:
-            query = "SELECT answer, qn_id, user_id, ans_id FROM "+self.ans_tb_name+" WHERE qn_id=%s"
+            query = "SELECT answer, qn_id, user_id, ans_id, preferred FROM "+self.ans_tb_name+" WHERE qn_id=%s"
             self.cursor.execute(query, (qn_id,))
             rows = self.cursor.fetchall()
             super().close_conn()
@@ -81,7 +81,7 @@ class AnswerHandler(DbHandler):
     def get_answer_by_qn_id(self, ans_id, qn_id):
         ''' gets a specified answer for the specified question '''
         try:
-            query = "SELECT answer, qn_id, user_id, ans_id FROM "+self.ans_tb_name+" WHERE qn_id=%s and ans_id=%s"
+            query = "SELECT answer, qn_id, user_id, ans_id, preferred FROM "+self.ans_tb_name+" WHERE qn_id=%s and ans_id=%s"
             self.cursor.execute(query, (qn_id, ans_id))
             rows = self.cursor.fetchone()
             super().close_conn()
@@ -94,7 +94,7 @@ class AnswerHandler(DbHandler):
     def get_answer_by_ans_id(self, ans_id):
         ''' get the specified question from the database '''
         try:
-            query = "SELECT answer, qn_id, user_id, ans_id FROM "+self.ans_tb_name+" WHERE ans_id=%s"
+            query = "SELECT answer, qn_id, user_id, ans_id, preferred FROM "+self.ans_tb_name+" WHERE ans_id=%s"
             self.cursor.execute(query, (ans_id,))
             row = self.cursor.fetchone()
             super().close_conn()
@@ -107,7 +107,7 @@ class AnswerHandler(DbHandler):
     def get_answers_by_ans_user_id(self, user_id):
         ''' gets all the answers the specified user has ever asked on the platform '''
         try:
-            query = "SELECT answer, qn_id, user_id, ans_id FROM "+self.ans_tb_name+" WHERE user_id=%s"
+            query = "SELECT answer, qn_id, user_id, ans_id, preferred FROM "+self.ans_tb_name+" WHERE user_id=%s"
             self.cursor.execute(query, (user_id,))
             rows = self.cursor.fetchall()
             super().close_conn()
@@ -120,7 +120,7 @@ class AnswerHandler(DbHandler):
     def get_answers(self):
         ''' gets all the answers in the database '''
         try:
-            query = "SELECT answer, qn_id, user_id, ans_id FROM "+self.ans_tb_name+""
+            query = "SELECT answer, qn_id, user_id, ans_id, preferred FROM "+self.ans_tb_name+""
             self.cursor.execute(query)
             rows = self.cursor.fetchall()
             super().close_conn()

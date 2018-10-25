@@ -5,11 +5,12 @@ from pprint import pprint
 class Answer:
     ''' this class will handle all the data processing for answers '''
     
-    def __init__(self, answer, qn_id, user_id, ans_id = None):
+    def __init__(self, answer, qn_id, user_id, ans_id = None, preferred = None):
         self.ans_id = ans_id
         self.answer = answer
         self.qn_id = qn_id
         self.user_id = user_id
+        self.preferred = preferred
         self.comments = []
 
     def json(self):
@@ -18,6 +19,7 @@ class Answer:
             "qn_id": self.qn_id,
             "user_id": self.user_id,
             "answer": self.answer,
+            "preferred": self.preferred,
             "comments": self.comments
         }
 
@@ -39,7 +41,7 @@ class Answer:
         answersList = []
         if answers:
             for answer in answers:
-                qn = Answer(answer[0], answer[1], answer[2], answer[3])
+                qn = Answer(answer['answer'], answer['qn_id'], answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(qn)
 
             return [x.json() for x in answersList]
@@ -55,7 +57,7 @@ class Answer:
         answersList = []
         if answers:
             for answer in answers:  # answer, qn_id, user_id, ans_id
-                ans = Answer(answer['answer'], answer['qn_id'], answer["user_id"], answer["ans_id"])
+                ans = Answer(answer['answer'], answer['qn_id'], answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(ans)
 
             # append comments....
@@ -77,7 +79,7 @@ class Answer:
         print('printing answer...')
         print(answer)
         if answer:  # answer, qn_id, user_id, ans_id
-            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"], answer["preferred"])
         return None
 
     @classmethod
@@ -86,7 +88,7 @@ class Answer:
         answer = handle.get_answer_by_ans_id(answerId)
         print(answer)
         if answer:
-            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"], answer["preferred"])
         return None
 
     @classmethod
@@ -97,7 +99,7 @@ class Answer:
         answersList = []
         if answers:
             for answer in answers:  # answer, qn_id, user_id, ans_id
-                ans = Answer(answer['answer'], answer['qn_id'],answer["user_id"], answer["ans_id"])
+                ans = Answer(answer['answer'], answer['qn_id'],answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(ans)
 
             # append comments....

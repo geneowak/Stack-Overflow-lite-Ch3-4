@@ -29,7 +29,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def update_qn_comment(self, comment, qn_id):
         ''' updates a question comment in the database '''
@@ -43,9 +43,9 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
-    def get_qn_comment_by_qn_id(self, qn_id):
+    def get_qn_comments_by_qn_id(self, qn_id):
         ''' returns the specified question comment from the database '''
         try:
             query = "SELECT comment, id, user_id, qn_id FROM "+self.qn_table_name+" WHERE qn_id=%s"
@@ -57,7 +57,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def get_qn_comments(self):
         try:
@@ -83,7 +83,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def check_repeated_qn_comment(self, comment):
         ''' checks if the specified question comment already exists in the database '''
@@ -97,7 +97,7 @@ class CommentsHandler(DbHandler):
         except (Exception) as error:
             pprint("and error occured", error)
             super().close_conn()
-            return False
+            raise error
 
     def insert_ans_comment(self, user_id, ans_id, comment):
         ''' adds an answer comment to the database '''
@@ -113,7 +113,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def update_ans_comment(self, user_id, ans_id, comment):
         ''' updates an answer comment in the database '''
@@ -127,9 +127,9 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
-    def get_ans_comment_by_ans_id(self, user_id, ans_id, comment):
+    def get_ans_comments_by_ans_id(self, ans_id):
         ''' returns the specified answer comment from the database '''
         try:
             query = "SELECT comment, id, user_id, ans_id FROM "+self.ans_table_name+" WHERE ans_id=%s"
@@ -141,7 +141,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def get_ans_comments(self):
         try:
@@ -156,7 +156,7 @@ class CommentsHandler(DbHandler):
             super().close_conn()
             return None
 
-    def delete_ans_comment_by_ans_id(self, comment_id):
+    def delete_ans_comment_by_id(self, comment_id):
         ''' deletes the specified answer comment from the database '''
         try:
             query = "DELETE FROM "+self.ans_table_name+" WHERE id=%s"
@@ -168,7 +168,7 @@ class CommentsHandler(DbHandler):
             pprint("and error occured", error)
             self.conn.rollback()
             super().close_conn()
-            return False
+            raise error
 
     def check_repeated_ans_comment(self, comment):
         ''' checks if the specified answer comment already exists in the database '''
@@ -182,7 +182,7 @@ class CommentsHandler(DbHandler):
         except (Exception) as error:
             pprint("and error occured", error)
             super().close_conn()
-            return False
+            raise error
 
     
         

@@ -80,13 +80,47 @@ class Comment:
 
     @classmethod
     def get_comments_by_parent_id(cls,parent, parent_id):
-        return list(filter(lambda comm: comm['parent'] == parent and comm['parent_id'] == parent_id, cls.comments))
+        # get_qn_comments_by_qn_id(self, qn_id):
+        # get_ans_comments_by_ans_id(self, ans_id):
+        if parent.lower() == "question":
+            handle = CommentsHandler()
+            qn_comments = handle.get_qn_comments_by_qn_id(parent_id)
+            commentsList = []
+            if qn_comments:
+                for comment in qn_comments:
+                    qn = Comment(comment["user_id"], comment["comment"], "question", comment["qn_id"])
+                    commentsList.append(qn.json())
+                return commentsList
+            return commentsList
+        elif parent.lower() == "answer":
+            handle = CommentsHandler()
+            ans_comments = handle.get_ans_comments_by_ans_id(parent_id)
+            commentsList = []
+            if ans_comments:
+                for comment in ans_comments:
+                    qn = Comment(comment["user_id"], comment["comment"], "answer", comment["ans_id"])
+                    commentsList.append(qn.json())
+                return commentsList
+            return commentsList
+        
+        return None
 
-    def check_for_repeated_comment(self):
+    @classmethod
+    def check_for_repeated_comment(cls, comment, comment_type):
         ''' check if an comment has already been given '''
-        for comm in cls.comments:
-            if comm['parent'].lower() == parent.lower():
-                if str(comm['parent_id']) == str(parent_id):
-                    if comm['comment'].lower() == comment.lower():
-                        return True
+        # check_repeated_ans_comment(self, comment):
+        # check_repeated_qn_comment(self, comment):
+        if comment_type.lower() == "question":
+            handle = CommentsHandler()
+            qn = handle.check_repeated_qn_comment(comment)
+            if qn:
+                return True;
+            return False
+        elif comment_type.lower() == "answer":
+            handle = CommentsHandler()
+            ans = handle.check_repeated_ans_comment(comment)
+            if ans:
+                return True;
+            return False
+        
         return False
