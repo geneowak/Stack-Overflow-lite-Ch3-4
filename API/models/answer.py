@@ -5,11 +5,12 @@ from pprint import pprint
 class Answer:
     ''' this class will handle all the data processing for answers '''
     
-    def __init__(self, body, qn_id, user_id, ans_id = None):
+    def __init__(self, answer, qn_id, user_id, ans_id = None, preferred = None):
         self.ans_id = ans_id
-        self.body = body
+        self.answer = answer
         self.qn_id = qn_id
         self.user_id = user_id
+        self.preferred = preferred
         self.comments = []
 
     def json(self):
@@ -17,7 +18,8 @@ class Answer:
             "ans_id": self.ans_id,
             "qn_id": self.qn_id,
             "user_id": self.user_id,
-            "answer": self.body,
+            "answer": self.answer,
+            "preferred": self.preferred,
             "comments": self.comments
         }
 
@@ -28,7 +30,7 @@ class Answer:
         if Question.get_question_by_id(answer.qn_id):
             handle = AnswerHandler()
             pprint(answer.json())
-            handle.insert_answer(answer.user_id, answer.qn_id, answer.body)
+            handle.insert_answer(answer.user_id, answer.qn_id, answer.answer)
             return True
         return False
 
@@ -39,7 +41,7 @@ class Answer:
         answersList = []
         if answers:
             for answer in answers:
-                qn = Answer(answer[0], answer[1], answer[2], answer[3])
+                qn = Answer(answer['answer'], answer['qn_id'], answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(qn)
 
             return [x.json() for x in answersList]
@@ -54,8 +56,8 @@ class Answer:
         answers = handle.get_answers_by_qn_id(qn_id)
         answersList = []
         if answers:
-            for answer in answers:  # body, qn_id, user_id, ans_id
-                ans = Answer(answer['body'], answer['qn_id'], answer["user_id"], answer["ans_id"])
+            for answer in answers:  # answer, qn_id, user_id, ans_id
+                ans = Answer(answer['answer'], answer['qn_id'], answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(ans)
 
             # append comments....
@@ -64,28 +66,29 @@ class Answer:
         return answersList
 
     @classmethod
-    def check_ans_body(cls, body, qn_id):
+    def check_repeated_ans(cls, answer, qn_id):
         ''' check if an answer has already been given '''
         handle = AnswerHandler()
-        return handle.check_body(body, qn_id)
+        return handle.check_answer(answer, qn_id)
 
     @classmethod
-    def get_answer_by_id(cls, answerId, qn_id):
+    def get_answer_by_qn_id(cls, answerId, qn_id):
+        ''' gets  '''
         handle = AnswerHandler()
         answer = handle.get_answer_by_qn_id(answerId, qn_id)
         print('printing answer...')
         print(answer)
-        if answer:  # body, qn_id, user_id, ans_id
-            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+        if answer:  # answer, qn_id, user_id, ans_id
+            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"], answer["preferred"])
         return None
 
     @classmethod
-    def get_answer_by_qn_id(cls, answerId):
+    def get_answer_by_ans_id(cls, answerId):
         handle = AnswerHandler()
-        answer = handle.get_answers_by_ans_id(answerId)
+        answer = handle.get_answer_by_ans_id(answerId)
         print(answer)
         if answer:
-            return Answer(answer["body"], answer["qn_id"], answer["user_id"], answer["ans_id"])
+            return Answer(answer["answer"], answer["qn_id"], answer["user_id"], answer["ans_id"], answer["preferred"])
         return None
 
     @classmethod
@@ -95,8 +98,8 @@ class Answer:
         # print(answer)
         answersList = []
         if answers:
-            for answer in answers:  # body, qn_id, user_id, ans_id
-                ans = Answer(answer['body'], answer['qn_id'],answer["user_id"], answer["ans_id"])
+            for answer in answers:  # answer, qn_id, user_id, ans_id
+                ans = Answer(answer['answer'], answer['qn_id'],answer["user_id"], answer["ans_id"], answer["preferred"])
                 answersList.append(ans)
 
             # append comments....
@@ -105,10 +108,10 @@ class Answer:
         return answersList
 
     @classmethod
-    def update_answer(cls, ans_id, body):
-        print("ans_id:", ans_id, " body:", body)
+    def update_answer(cls, ans_id, answer):
+        print("ans_id:", ans_id, " answer:", answer)
         handle = AnswerHandler()
-        question = handle.update_answer(ans_id, body)
+        question = handle.update_answer(ans_id, answer)
         # print(question)
         if question:
             return True

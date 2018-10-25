@@ -27,7 +27,8 @@ def create_tables():
  
 @app.route('/')
 def get_def_page():
-   return render_template('index.html')
+    ''' This method displays the default page when the application loads '''
+    return render_template('index.html')
 
 """ custom error handlers to catch and display error messages for errors not handled by the app """
 @app.errorhandler(404)
@@ -49,9 +50,9 @@ api.add_resource(Questions, '/api/v1/questions/<string:questionId>')
 api.add_resource(QuestionList, '/api/v1/questions')
 api.add_resource(AnswerList, '/api/v1/answers')
 api.add_resource(Answers, '/api/v1/questions/<string:questionId>/answers')
-# api.add_resource(CommentList, '/api/v1/comments')
-# api.add_resource(QuestionComments, '/api/v1/questions/<string:questionId>/comments')
-# api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
+api.add_resource(CommentList, '/api/v1/comments')
+api.add_resource(QuestionComments, '/api/v1/questions/<string:questionId>/comments')
+api.add_resource(AnswerComments, '/api/v1/answers/<string:answerId>/comments')
 
 api.add_resource(RegisterUser, '/api/v1/auth/signup')
 api.add_resource(Login, '/api/v1/auth/login')

@@ -28,7 +28,7 @@ class UserModel:
     def get_user_by_email(email):
         handle = UserHandler()
         row = handle.get_user_by_email(email)
-        print(row)
+        # print(row)
         if row:
             return UserModel(row['username'], row['password'], row['user_id'], row['email'])
         return None
