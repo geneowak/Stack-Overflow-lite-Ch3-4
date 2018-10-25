@@ -6,6 +6,3 @@ __pycache__/
 .pytest_cache/
 .coverage
 venv/
-venv2/
-re
-sys
