@@ -5,5 +5,9 @@ omit=
    ./UI/*
    ./API/tests/*
    */API/models/*
-   ./API*\__init__.py
+   */API/database/*
+   */__init__.py
+   ./API/__init__.py
+   ./API/config.py
+   ./API/resources/comment.py 
    
