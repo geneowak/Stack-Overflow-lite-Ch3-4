@@ -61,11 +61,11 @@ These are the endpoints that are currently available
 |PUT|  /api/v1/questions/\<int:questionId\>/answers /\<int:answerId\>      | Accept answer     |
 |PUT| /api/v1/questions/\<int:questionId\>        | Update a question |
 |DELETE| /api/v1/questions/\<int:questionId\>        | Delete a question |
-| POST | /api/v1/questions/<int:questionId\>/comments | Add a comment to a question |
-| POST | /api/v1/answers/<int:answerId\>/comments | Add a comment to an answer |
+| POST | /api/v1/questions/\<int:questionId\>/comments | Add a comment to a question |
+| POST | /api/v1/answers/\<int:answerId\>/comments | Add a comment to an answer |
 | GET | /api/v1/comments | Get all the available comments |
-| GET | /api/v1/questions/<int:questionId\>/comments | Get all the comments for the given question |
-| GET | /api/v1/answers/<int:answerId\>/comments | Get all the comments for the given question |
+| GET | /api/v1/questions/\<int:questionId\>/comments | Get all the comments for the given question |
+| GET | /api/v1/answers/\<int:answerId\>/comments | Get all the comments for the given question |
 
 ## Running the tests
 
